@@ -1,0 +1,9 @@
+.row-closed-won {
+    background-color: green;
+    color: white;
+}
+
+.row-closed-lost {
+    background-color: red;
+    color: white;
+}

@@ -1,0 +1,8 @@
+.c-bg {
+    background-color: rgb(242, 242, 242);
+}
+.c-image-round {
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+}

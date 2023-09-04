@@ -1,0 +1,28 @@
+<template>
+    <div class="slds-p-around_medium c-bg">
+        <template if:true={photoId}>
+            <img class="slds-align_absolute-center c-image-round" src={photoURL}></img>
+        </template>
+        
+        <template if:true={photoURL}>
+            <div class="slds-col slds-size_3-of-3">
+                <div class="slds-border_left slds-border_right slds-border_bottom" style="height: 100%; padding: 5px;">
+                  <template if:true={photoURL}>
+                    <img src={photoURL} style="width: 100%; height: 95%;" alt="Uploaded Image">
+                  </template> 
+                </div>
+               
+            </div>
+          </template>
+        <template if:false={photoId}>
+            <lightning-file-upload
+                label="It seems like you have not uploaded any profile photo till now. Please click on the Upload Files button."
+                name="fileUploader"
+                accept={acceptedFormats}
+                record-id={recordId}
+                onuploadfinished={handleUploadFinished}
+            >
+            </lightning-file-upload>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,14 @@
+<template>
+
+    <lightning-card title="Car Color Picker" icon-name="utility:travel_and_places">
+        <img src={selectedImage} alt="Car Image" width="700px">
+    </lightning-card>
+
+    <p slot="footer">
+        <template for:each={colors} for:item="color">
+            <span key={color} data-color={color} onclick={selectedHandler} class={color}></span>
+        </template>
+    </p>
+    
+
+</template>
