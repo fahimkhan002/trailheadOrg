@@ -30,13 +30,13 @@ export default class TaxCalculator extends LightningElement {
         this.calculateTax();
     }
 
-    get monthlyTaxPercentageClass() {
-        return this.monthlyTaxPercentage >= 0 ? 'tax-percentage-red' : 'tax-percentage-green';
-    }
+    // get monthlyTaxPercentageClass() {
+    //     return this.monthlyTaxPercentage >= 0 ? 'tax-percentage-red' : 'tax-percentage-green';
+    // }
     
-    get monthlyIncomePercentageClass() {
-        return this.monthlyIncomePercentage >= 0 ? 'tax-percentage-green' : 'tax-percentage-red';
-    }
+    // get monthlyIncomePercentageClass() {
+    //     return this.monthlyIncomePercentage >= 0 ? 'tax-percentage-green' : 'tax-percentage-red';
+    // }
     
 
     calculateTax() {
