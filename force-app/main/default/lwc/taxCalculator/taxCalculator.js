@@ -1,4 +1,6 @@
 import { LightningElement, track } from 'lwc';
+import { loadScript } from 'lightning/platformResourceLoader';
+import CHART_JS from '@salesforce/resourceUrl/ChartJs';
 
 export default class TaxCalculator extends LightningElement {
     @track monthlySalary = 0;
@@ -77,4 +79,52 @@ export default class TaxCalculator extends LightningElement {
         // Calculate Monthly Income Percentage
         this.monthlyIncomePercentage = (100 - this.monthlyTaxPercentage).toFixed(1);
     }
+
+
+    chart;
+
+    async renderedCallback() {
+        await this.loadChartJs();
+        
+        const canvas = this.template.querySelector('canvas.donutChart');
+
+        if (canvas) {
+            if (this.chart) {
+                this.chart.destroy();
+            }
+            this.initializeChart(canvas);
+        }
+    }
+    
+
+    async loadChartJs() {
+        if (typeof Chart === 'undefined') {
+            await loadScript(this, CHART_JS);
+        }
+    }
+
+    async initializeChart(canvas) {
+        const ctx = canvas.getContext('2d');
+    
+        this.chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Tax', 'Income'],
+                datasets: [{
+                    data: [this.monthlyTaxPercentage, this.monthlyIncomePercentage],
+                    backgroundColor: ['red', 'green']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+    
+
+
+
+
+
 }
