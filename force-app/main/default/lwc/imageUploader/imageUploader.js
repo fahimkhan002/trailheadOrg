@@ -10,8 +10,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import { RefreshEvent } from "lightning/refresh";
 
-
-
+ 
 
 export default class ImageUploader extends LightningElement {
 
@@ -51,30 +50,37 @@ export default class ImageUploader extends LightningElement {
 
   @api showFooter = false;
 
-    @track toastTitle = '';
-    @track toastMessage = '';
-    @track toastVariant = '';
+  @track div2Height = 'auto';
 
+  @api pictureHeight = 80; // Initialize with default value
 
+  @api pictureWidth = 100; // Initialize with default value
 
-
-  // Define the @api properties to receive values from the XML
-
-  @api pictureHeight; // To store the specified picture height
-
-  @api pictureWidth; // To store the specified picture width
-
-
-
+ 
 
   connectedCallback() {
+
+    this.pictureHeight = this.pictureHeight || 80; // Use default value 80 if not specified
+
+    this.pictureWidth = this.pictureWidth || 100; // Use default value 100 if not specified
+
+    this.div2Height = this.calculateHeight(this.pictureHeight, this.pictureWidth);
 
     this.populateImageUrl();
 
   }
 
+ 
 
+  calculateHeight(height, width) {
 
+    const aspectRatio = width / height;
+
+    return 'calc(100% * ${aspectRatio})';
+
+  }
+
+ 
 
   handleFilesChange(event) {
 
@@ -106,8 +112,7 @@ export default class ImageUploader extends LightningElement {
 
   }
 
-
-
+ 
 
   handleSave() {
 
@@ -125,8 +130,7 @@ export default class ImageUploader extends LightningElement {
 
   }
 
-
-
+ 
 
   handleReplace() {
 
@@ -164,10 +168,9 @@ export default class ImageUploader extends LightningElement {
 
   }
 
+ 
 
-
-
-  showUploadErrorToast(errorMessage = 'Please select a file to upload!!') {
+  showUploadErrorToast(errorMessage = 'Please select a file to upload!') {
 
     const event = new ShowToastEvent({
 
@@ -189,80 +192,73 @@ export default class ImageUploader extends LightningElement {
 
     let imageFile = null;
 
-
-
+ 
 
     // Find the first image in the filesUploaded array
 
     for (let i = 0; i < this.filesUploaded.length; i++) {
 
-        if (this.filesUploaded[i].type.startsWith('image/')) {
+      if (this.filesUploaded[i].type.startsWith('image/')) {
 
-            imageFile = this.filesUploaded[i];
+        imageFile = this.filesUploaded[i];
 
-            break;
+        break;
 
-        }
+      }
 
     }
 
-
-
+ 
 
     if (!imageFile) {
 
-        this.dispatchEvent(
+      this.dispatchEvent(
 
-            new ShowToastEvent({
+        new ShowToastEvent({
 
-                title: 'Error!!',
+          title: 'Error!!',
 
-                message: 'No image file found in the uploaded files.',
+          message: 'No image file found in the uploaded files.',
 
-                variant: 'error',
+          variant: 'error',
 
-            }),
+        }),
 
-        );
+      );
 
-        return;
+      return;
 
     }
 
-
-
+ 
 
     // Process the image file
 
     this.file = imageFile;
 
-
-
-
-    // The rest of the code remains the same as before
+ 
 
     if (this.file.size > this.MAX_FILE_SIZE) {
 
-        this.dispatchEvent(
+      this.dispatchEvent(
 
-            new ShowToastEvent({
+        new ShowToastEvent({
 
-                title: 'Error!!!',
+          title: 'Error!!!',
 
-                message: 'File Size is too large',
+          message: 'File Size is too large',
 
-                variant: 'error',
+          variant: 'error',
 
-            }),
+        }),
 
-        );
+      );
 
-        return;
+      return;
 
     }
 
-
-
+ 
 
     this.isTrue = true;
 
@@ -276,15 +272,15 @@ export default class ImageUploader extends LightningElement {
 
     this.fileReader.onloadend = (() => {
 
-        this.fileContents = this.fileReader.result;
+      this.fileContents = this.fileReader.result;
 
-        let base64 = 'base64,';
+      let base64 = 'base64,';
 
-        this.content = this.fileContents.indexOf(base64) + base64.length;
+      this.content = this.fileContents.indexOf(base64) + base64.length;
 
-        this.fileContents = this.fileContents.substring(this.content);
+      this.fileContents = this.fileContents.substring(this.content);
 
-        this.saveToFile();
+      this.saveToFile();
 
     });
 
@@ -292,8 +288,7 @@ export default class ImageUploader extends LightningElement {
 
   }
 
-
-
+ 
 
   saveToFile() {
 
@@ -303,15 +298,15 @@ export default class ImageUploader extends LightningElement {
 
         this.imageUrl = this.data;
 
-        this.pictureHeight = this.pictureHeight || 150; // Use default value 150 if not specified
+        this.pictureHeight = this.pictureHeight || 80; // Use default value 150 if not specified
 
-        this.pictureWidth = this.pictureWidth || 200; // Use default value 200 if not specified
+        this.pictureWidth = this.pictureWidth || 100; // Use default value 200 if not specified
 
-        // Use these values to set the height and width of the image
+        const aspectRatio = this.pictureWidth / this.pictureHeight;
 
-        this.imageStyle = `height: ${this.pictureHeight}px; width: ${this.pictureWidth}px;`;
+        const newHeight = this.pictureWidth / aspectRatio;
 
-       
+        this.div2Height = newHeight + 'px';
 
         this.isTrue = false;
 
@@ -321,7 +316,19 @@ export default class ImageUploader extends LightningElement {
 
         this.filesUploaded = [];
 
-        this.showToast('Success!!', this.file.name + ' - Uploaded Successfully!!!', 'success');
+        this.dispatchEvent(
+
+          new ShowToastEvent({
+
+            title: 'Success!!',
+
+            message: this.file.name + ' - Uploaded Successfully!!!',
+
+            variant: 'success',
+
+          }),
+
+        );
 
         // Refresh the data after successful upload
 
@@ -333,7 +340,6 @@ export default class ImageUploader extends LightningElement {
 
       .catch(error => {
 
-        this.showToast('Error while uploading File', error.message, 'error');
         this.dispatchEvent(
 
           new ShowToastEvent({
@@ -362,8 +368,7 @@ export default class ImageUploader extends LightningElement {
 
   }
 
-
-
+ 
 
   populateImageUrl() {
 
@@ -377,23 +382,29 @@ export default class ImageUploader extends LightningElement {
 
         this.imageUrl = data;
 
+        const aspectRatio = this.pictureWidth / this.pictureHeight;
+
+        const newHeight = this.pictureWidth / aspectRatio;
+
         this.showDiv1 = false;
 
         this.showDiv2 = true;
 
         this.isDelete = true;
 
+        this.div2Height = newHeight + 'px';
+
       }
 
     }).catch(error => {
 
+ 
 
     });
 
   }
 
-
-
+ 
 
   handleRemovePicture() {
 
@@ -401,8 +412,8 @@ export default class ImageUploader extends LightningElement {
 
       .then(data => {
 
-        //console.log(data);
-        this.isFile = false;
+        console.log(data);
+
         this.imageUrl = null;
 
         this.showDiv1 = true;
@@ -413,30 +424,50 @@ export default class ImageUploader extends LightningElement {
 
         this.isDelete = false;
 
-        this.showToast('Success!!', 'Image Deleted Successfully!!!', 'success');
+        this.fileName = ''; // Clear the file name here
+
+        this.dispatchEvent(
+
+          new ShowToastEvent({
+
+            title: 'Success!!',
+
+            message: 'Image Deleted Successfully!!!',
+
+            variant: 'success',
+
+          }),
+
+        );
 
         this.dispatchEvent(new RefreshEvent());
 
       })
 
       .catch(error => {
-        this.showToast('Error!!', error.message, 'error');
+
+        this.dispatchEvent(
+
+          new ShowToastEvent({
+
+            title: 'Error!!!!!',
+
+            message: error.message,
+
+            variant: 'error',
+
+          }),
+
+        );
+
       });
 
-      this.dispatchEvent(new RefreshEvent());
+    this.dispatchEvent(new RefreshEvent());
 
   }
 
+ 
 
-
-  showToast(title, message, variant) {
-    const toastEvent = new ShowToastEvent({
-      title: title,
-      message: message,
-      variant: variant,
-    });
-    this.dispatchEvent(toastEvent);
-  }
   // ... (any other methods or lifecycle hooks)
 
 }

@@ -1,0 +1,19 @@
+<template>
+    <lightning-card title="Record Creator">
+        <div class="slds-p-around_medium">
+            <lightning-combobox
+                label="Select Object"
+                options={objectOptions}
+                value={selectedObject}
+                onchange={handleObjectChange}>
+            </lightning-combobox>
+            <lightning-input
+                label="Number of Records"
+                type="number"
+                value={numRecords}
+                onchange={handleNumRecordsChange}>
+            </lightning-input>
+            <lightning-button label="Create Records" onclick={createRecords}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

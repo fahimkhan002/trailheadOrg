@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title="Lead Capture Form">
+        <div class="slds-p-around_medium">
+            <lightning-input label="First Name" value={firstName} onchange={handleFirstNameChange}></lightning-input>
+            <lightning-input label="Last Name" value={lastName} onchange={handleLastNameChange}></lightning-input>
+            <lightning-input label="Email" type="email" value={email} onchange={handleEmailChange}></lightning-input>
+            <lightning-input label="Mobile Phone" type="tel" value={mobilePhone} onchange={handleMobilePhoneChange}></lightning-input>      
+                      
+            <div class="slds-form-element">
+                <label class="slds-form-element__label">Upload a File</label>
+                <div class="slds-form-element__control">
+                    <input type="file" accept=".pdf,.doc,.docx" onchange={handleFileChange} />
+                    <button class="slds-button slds-button_brand" onclick={handleUpload}>Upload</button>
+                    <p>{selectedFileName}</p>
+                </div>
+            </div>
+
+
+            <lightning-textarea label="Comments" value={comments} onchange={handleCommentsChange}></lightning-textarea>
+
+            <lightning-button label="Submit" onclick={handleSubmit}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

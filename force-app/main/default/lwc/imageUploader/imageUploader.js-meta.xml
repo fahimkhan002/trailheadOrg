@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-
     <apiVersion>57.0</apiVersion>
-
     <isExposed>true</isExposed>
-
-    <targets>
-
+    <targets>  
         <target>lightning__RecordPage</target>
-
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
     </targets>
-
     <targetConfigs>
-
         <targetConfig targets="lightning__RecordPage">
-
             <property type="Boolean" default="true" name="showFooter" label="Show Footer?"/>
-
-            <property type="Integer" default="150" name="pictureHeight" label="Picture Height"/>
-
-            <property type="Integer" default="200" name="pictureWidth" label="Picture Width"/>
-
+            <property type="Integer" default="50" name="pictureHeight" label="Picture Height"/>
+            <property type="Integer" default="100" name="pictureWidth" label="Picture Width"/>
         </targetConfig>
-
     </targetConfigs>
-
-
-
-
 </LightningComponentBundle>

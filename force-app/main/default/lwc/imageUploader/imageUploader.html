@@ -1,31 +1,20 @@
 <template>
 
- 
-
   <lightning-card title="Profile Picture" icon-name="utility:image">
 
     <template if:true={isDelete}>
 
-    <div slot="actions">
+      <div slot="actions">
 
-     
+        <lightning-button label="Remove Picture" onclick={handleRemovePicture} variant="destructive" class="custom-button-padding"></lightning-button>
 
-        <lightning-button  label="Remove Picture" onclick={handleRemovePicture} variant="destructive" class="custom-button-padding"></lightning-button>
+      </div>
 
-     
-
-    </div>
-
-  </template>
+    </template>
 
     <!-- Rest of the card content -->
 
- 
-
-
-
-
-    <div class="slds-box custom-container slds-grid slds-gutters custom-fixed-height">
+    <div class="slds-box custom-container slds-grid slds-gutters" style="height: {div2Height};">
 
       <!-- Div 1 -->
 
@@ -33,7 +22,7 @@
 
         <div class="slds-col slds-size_3-of-3">
 
-          <lightning-card >
+          <lightning-card>
 
             <div style="text-align:center">
 
@@ -47,35 +36,47 @@
 
             <template if:true={isFile}>
 
-            <div class="slds-text-body_small slds-text-color_error" style="text-align: center;">{fileName}
+              <div class="slds-text-body_small slds-text-color_error" style="text-align: center;">
 
-              <template if:true={showLoadingSpinner}>
+                <template if:true={showLoadingSpinner}>
 
-                <lightning-spinner alternative-text="Uploading......" size="medium"></lightning-spinner>
+                  <lightning-spinner alternative-text="Uploading......" size="medium"></lightning-spinner>
+
+                </template>
+
+              </div>
+
+            </template>
+
+            <br />
+
+ 
+
+            <!-- Display the selected file's name above the Upload Image button -->
+
+            <div style="text-align: center;">
+
+              <template if:true={fileName}>
+
+                <p>{fileName}</p>
 
               </template>
 
             </div>
 
-          </template>
-
-            <br />
+ 
 
             <div style="text-align: center;">
 
               <template if:false={data}>
 
-                <lightning-button class="slds-m-top--medium" label="Upload Image" onclick={handleSave}
-
-                  variant="brand" disabled={isTrue}></lightning-button>
+                <lightning-button class="slds-m-top--medium" label="Upload Image" onclick={handleSave} variant="brand" disabled={isTrue}></lightning-button>
 
               </template>
 
               <template if:true={data}>
 
-                <lightning-button class="slds-m-top--medium" label="Upload Image" onclick={handleReplace}
-
-                  variant="brand" disabled={isTrue}></lightning-button>
+                <lightning-button class="slds-m-top--medium" label="Upload Image" onclick={handleReplace} variant="brand" disabled={isTrue}></lightning-button>
 
               </template>
 
@@ -97,25 +98,21 @@
 
         <div class="slds-col slds-size_3-of-3">
 
-          <div class="slds-border_left slds-border_right slds-border_bottom" style="height: 100%; padding: 5px;">
+          <div class="slds-border_left slds-border_right slds-border_bottom" style="padding: 5px;">
 
-              <template if:false={data}>
+            <template if:false={data}>
 
-                <i class="slds-text-color_error">No image uploaded!</i>
+              <i class="slds-text-color_error">No image uploaded!</i>
 
-              </template>
+            </template>
 
-              <template if:true={imageUrl}>
+            <template if:true={imageUrl}>
 
-                <img src={imageUrl} style="width: 100%; height: 95%;" alt="Uploaded Image">
+              <img src={imageUrl} style="width:100%; height:100%;" alt="Uploaded Image">
 
-                 
+            </template>
 
-              </template>
-
-            </div>
-
-           
+          </div>
 
         </div>
 
@@ -123,24 +120,18 @@
 
     </div>
 
-
-
+ 
 
     <template if:true={showFooter}>
 
       <div style="text-align: center; padding: 10px;">
 
-       <b> Made by Salesforce Team @HawkLogix </b>
+        <b> Developed By: HawkLogixTeam </b>
 
       </div>
 
     </template>
 
-
-
-
   </lightning-card>
 
- 
-
-  </template>
+</template>

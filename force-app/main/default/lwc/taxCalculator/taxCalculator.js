@@ -1,4 +1,6 @@
 import { LightningElement, track } from 'lwc';
+import chartJs from '@salesforce/resourceUrl/chartjs';
+import { loadScript } from 'lightning/platformResourceLoader';
 
 export default class TaxCalculator extends LightningElement {
     @track monthlySalary = 0;
@@ -12,13 +14,33 @@ export default class TaxCalculator extends LightningElement {
     @track monthlyTaxPercentage = 0;
     @track monthlyIncomePercentage = 0;
 
+    chartData = [];
+    chartOptions = {};
+
+    chartJsInitialized = false;
+
     taxYears = [
-        
         { label: '2023', value: '2023' },
         { label: '2022', value: '2022' },
-        {label: '2021', value: '2021'}
+        { label: '2021', value: '2021' }
         // Add more tax years as needed
     ];
+
+    connectedCallback() {
+        if (this.chartJsInitialized) {
+            return;
+        }
+
+        // Load the Chart.js script from the static resource
+        loadScript(this, chartJs)
+            .then(() => {
+                this.initializeDonutChart();
+                this.chartJsInitialized = true;
+            })
+            .catch(error => {
+                console.error('Error loading Chart.js', error);
+            });
+    }
 
     handleMonthlySalaryChange(event) {
         this.monthlySalary = parseFloat(event.target.value);
@@ -29,15 +51,6 @@ export default class TaxCalculator extends LightningElement {
         this.selectedTaxYear = event.detail.value;
         this.calculateTax();
     }
-
-    // get monthlyTaxPercentageClass() {
-    //     return this.monthlyTaxPercentage >= 0 ? 'tax-percentage-red' : 'tax-percentage-green';
-    // }
-    
-    // get monthlyIncomePercentageClass() {
-    //     return this.monthlyIncomePercentage >= 0 ? 'tax-percentage-green' : 'tax-percentage-red';
-    // }
-    
 
     calculateTax() {
         const monthlySalary = this.monthlySalary;
@@ -76,5 +89,32 @@ export default class TaxCalculator extends LightningElement {
 
         // Calculate Monthly Income Percentage
         this.monthlyIncomePercentage = (100 - this.monthlyTaxPercentage).toFixed(1);
+
+        // Update the chart data and options
+        this.chartData = {
+            labels: ['Monthly Tax', 'Salary After Tax'],
+            datasets: [
+                {
+                    data: [this.monthlyTaxPercentage, this.monthlyIncomePercentage],
+                    backgroundColor: ['red', 'green'],
+                },
+            ],
+        };
+
+        this.chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%', // Adjust the size of the hole in the center
+        };
+    }
+
+    // Initialize the chart
+    initializeDonutChart() {
+        const ctx = this.template.querySelector('#donutChart').getContext('2d');
+        this.donutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: this.chartData,
+            options: this.chartOptions,
+        });
     }
 }
