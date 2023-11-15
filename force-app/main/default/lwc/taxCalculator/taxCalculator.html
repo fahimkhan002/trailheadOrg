@@ -1,25 +1,17 @@
 <template>
     <lightning-card title="Tax Calculator">
-    <div class="slds-grid slds-gutters">
-        
-            <div class="slds-col slds-size_2-of-3">
-                <div class="slds-m-around_medium">
-                    <lightning-input label="Monthly Salary" type="number" step="0.01" onchange={handleMonthlySalaryChange}></lightning-input>
-                    <lightning-combobox label="Select Tax Year" options={taxYears} value={selectedTaxYear} onchange={handleTaxYearChange}></lightning-combobox>
-                    <div>
-                        <p>Monthly Tax: {monthlyTax} <span style="color: red;">({monthlyTaxPercentage}%)</span></p>
-                        <p>Salary After Tax: {salaryAfterTax} <span style="color: green;">({monthlyIncomePercentage}%)</span></p>
-                        <p>Yearly Income: {yearlyIncome}</p>
-                        <p>Yearly Tax: {yearlyTax} <span style="color: red;">({monthlyTaxPercentage}%)</span></p>
-                        <p>Yearly Income After Tax: {yearlyIncomeAfterTax} <span style="color: green;">({monthlyIncomePercentage}%)</span></p>
-                    </div>
-                </div>
+        <div class="slds-m-around_medium">
+            <lightning-input label="Monthly Salary" type="number" step="0.01" onchange={handleMonthlySalaryChange}></lightning-input>
+            <lightning-combobox label="Select Tax Year" options={taxYears} value={selectedTaxYear} onchange={handleTaxYearChange}></lightning-combobox>
+            <div>
+                <p>Monthly Tax: {monthlyTax} <span style="color: red;">({monthlyTaxPercentage}%)</span></p>
+                <p>Salary After Tax: {salaryAfterTax} <span style="color: green;">({monthlyIncomePercentage}%)</span></p>
+                <p>Yearly Income: {yearlyIncome}</p>
+                <p>Yearly Tax: {yearlyTax} <span style="color: red;">({monthlyTaxPercentage}%)</span></p>
+                <p>Yearly Income After Tax: {yearlyIncomeAfterTax} <span style="color: green;">({monthlyIncomePercentage}%)</span></p>
             </div>
-
-            <div class="slds-col slds-size_2-of-3">
-                <canvas id="donutChart" width="200" height="200"></canvas>
-            </div>
-        
-    </div>
-</lightning-card>
+            
+            
+        </div>
+    </lightning-card>
 </template>
