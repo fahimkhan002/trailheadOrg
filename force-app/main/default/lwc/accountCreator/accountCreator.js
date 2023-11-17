@@ -1,9 +1,9 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, track,api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import createAccounts from '@salesforce/apex/AccountController.createAccounts';
 
 export default class CreateAccounts extends LightningElement {
-    @track numberOfAccounts = 1;
+    @api numberOfAccounts = 1;
 
 
    //Connected callback will run when the component is initialized
@@ -18,11 +18,12 @@ export default class CreateAccounts extends LightningElement {
     }
     
     createAccounts() {
+        //console.log('User Input ',numberOfAccounts);
         createAccounts({ numRecords: this.numberOfAccounts })
             .then(result => {
               //  console.log(numRecords);
             
-                console.log('creating Records : ',result);
+              console.log("Creating records" + JSON.stringify(result));
             
             })
             .catch(error => {
